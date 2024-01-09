@@ -61,7 +61,7 @@ int CoupOpti(posGraph position, int parentID, int moveID, int isJoueurAuTrait, i
         if (isNodeTerminal(position) == 2) {
             return 0;
         }
-        return 100;
+        return -100;
     } else {
         for (int i = 0; i < 9; i++) {
             char *positionConvert = toTab(position.pos);
