@@ -1,21 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 
 #include "../fonctions_aux/posGraph.h"
 #include "../fonctions_aux/morpion.h"
 #include "../fonctions_aux/gestionGraph.h"
 #include "../fonctions_aux/minimax.h"
 
+#include "gestionTemps.h"
 #include "posGraphUtimate.h"
 #include "morpion_to_S.h"
 #include "gestionGraphUltimate.h"
 
+int time_left = 0;
+
 int main(int argc, char* argv[]){
+
+    /***** Vérification du format *****/
+    
     if(argc != 3){
-        fprintf(stderr, "Format correct : ./sm-bot.exe \"[POSITION FEN]\" [TEMPS RESTANT]");
+        fprintf(stderr, "Format correct : ./sm-bot.exe \"[POSITION FEN]\" [TEMPS RESTANT]\n");
         exit(EXIT_FAILURE);
-    } 
+    }
+
+    /********Gestion du temps *********/
+
+    Temps temps;
+    initialiserTemps(&temps);
+    time_left = atoi(argv[2]);
+
+    /*****Gestion des positions*****/
     
     posGraphUltimate position;
     char buffer[100];
@@ -39,8 +54,15 @@ int main(int argc, char* argv[]){
     
     int coup_precedent = last_play[1]-48;
     int coup_a_jouer[3];
-    LaunchBot(position,coup_precedent,coup_a_jouer);
+
+    if((last_play[0]-48)*10 + (last_play[1]-48) == 0){              //Dans le cas où la partie vient de commencer
+        coup_a_jouer[0] = 5;
+        coup_a_jouer[1] = 5;
+    }
+    else LaunchBot(position,coup_precedent,coup_a_jouer,&temps);
+
     printf("%d\n", coup_a_jouer[0]*10 + coup_a_jouer[1]);
+    
     return coup_a_jouer[0]*10 + coup_a_jouer[1];        //On renvoie le coup à jouer sous la forme <grille><case>
     
 }
