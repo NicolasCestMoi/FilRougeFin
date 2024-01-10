@@ -42,7 +42,7 @@ void LaunchBot(posGraphUltimate position, int coup_precedent, int coup_a_jouer[]
     else {
         maximum = -INFINI;
         char joueur_temp = position.joueur;
-        evaluation(position, grille, 1, 1, coup_a_jouer,1,temps);
+        evaluation(position, grille, 2, 1, coup_a_jouer,1,temps);
         position.joueur = joueur_temp;
     }
     coup_a_jouer[0] = grille;
@@ -56,9 +56,6 @@ int evaluation(posGraphUltimate position, int coup_precedent, int horizon, int i
     /******Gestion du temps restants*********/
 
     if(obtenirTempsEcoule(temps) > 23){     //On se laisse 7 secondes de marge pour remonter la récurssion et finir le prog 
-        return -INFINI;
-    }
-    if(time_left + obtenirTempsEcoule(temps)>923){      //Pareil  
         return -INFINI;
     }
 
